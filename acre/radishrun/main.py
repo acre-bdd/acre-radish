@@ -1,6 +1,7 @@
 import re
 import os
 import sys
+import subprocess
 import argparse
 import logging as log
 
@@ -23,12 +24,15 @@ def main():
 
     if myargs.upgrade:
         cmd = "pip3 install --upgrade -r etc/requirements.txt"
-        os.system(cmd)
+        ec = subprocess.run(cmd, shell=True).returncode
+        if ec != 0:
+            log.error("upgrading requirements failed")
+            return 3
 
     cmd = f'PYTHONPATH=src/ radish -t -b ./steps -b {AcrePath.steps()} {userdata} {" ".join(options)}'
     log.info(f"running: {cmd}")
     os.environ['DISPLAY'] = ":99.0"
-    return os.system(cmd)
+    return subprocess.run(cmd, shell=True).returncode
 
 
 def _read_userdata():
