@@ -28,7 +28,7 @@ def main():
     cmd = f'PYTHONPATH=src/ radish -t -b ./steps -b {AcrePath.steps()} {userdata} {" ".join(options)}'
     log.info(f"running: {cmd}")
     os.environ['DISPLAY'] = ":99.0"
-    os.system(cmd)
+    return os.system(cmd)
 
 
 def _read_userdata():
