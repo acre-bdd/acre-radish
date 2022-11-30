@@ -29,13 +29,15 @@ def main():
     os.makedirs(artifacts)
 
     if myargs.upgrade:
-        cmd = "pip3 install --upgrade -r etc/requirements.txt"
+        cmd = "sudo pip3 install --upgrade -r etc/requirements.txt"
         ec = subprocess.run(cmd, shell=True).returncode
         if ec != 0:
             log.error("upgrading requirements failed")
             return 3
 
     result_xml = os.path.join(artifacts, f"{myargs.trid}.xml")
+    os.environ['ARTIFACTS'] = artifacts
+    os.environ['TRID'] = myargs.trid
     env = f"-u TRID={myargs.trid} -u ARTIFACTS={artifacts}"
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
     cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)}'
