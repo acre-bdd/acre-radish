@@ -8,7 +8,7 @@ import logging as log
 
 from acre.path import AcrePath
 
-from .setting import Settings
+from .settings import Settings
 
 
 def main():
