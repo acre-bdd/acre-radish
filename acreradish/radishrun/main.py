@@ -4,8 +4,8 @@ import sys
 import subprocess
 import argparse
 import uuid
-import logging as log
 
+from acrelib import log
 from acre.path import AcrePath
 
 from .settings import Settings
