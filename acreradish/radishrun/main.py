@@ -41,7 +41,7 @@ def main():
     env = f"-u TRID={myargs.trid} -u ARTIFACTS={artifacts}"
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
     cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)}'
-    log.info(f"running: {cmd} [{myargs.trid}]")
+    log.info(f"xrunning: {cmd} [{myargs.trid}]")
     os.environ['DISPLAY'] = ":99.0"
     return subprocess.run(cmd, shell=True).returncode
 
