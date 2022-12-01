@@ -5,15 +5,15 @@ import logging as log
 
 class Settings:
     @staticmethod
-    def read(self, settings):
+    def read(settings):
         for setting in reversed(settings):
             sp = setting.split(",")
             for st in reversed(sp):
                 filename = st.replace(".", "/")
-                self.read_file(filename)
+                Settings.read_file(filename)
 
     @staticmethod
-    def read_file(self, file):
+    def read_file(file):
         sf = f"etc/settings/{file}"
         co = ConfigObj(sf)
         for key, value in co.items():
