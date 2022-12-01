@@ -1,6 +1,6 @@
 import os
 from configobj import ConfigObj
-import logging as log
+from acrelib import log
 
 
 class Settings:
