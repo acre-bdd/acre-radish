@@ -15,6 +15,7 @@ class Settings:
     @staticmethod
     def read_file(file):
         sf = f"etc/settings/{file}"
+        log.debug(f"reading settings file {sf}")
         co = ConfigObj(sf)
         for key, value in co.items():
             if key in os.environ:
