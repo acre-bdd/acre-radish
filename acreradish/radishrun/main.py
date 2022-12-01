@@ -18,13 +18,15 @@ def main():
     parser.add_argument('--upgrade',
                         help="update dependencies according to the project's etc/requirements.txt",
                         action="store_true")
+    parser.add_argument('--debug', help="enable debug logging", action="store_true")
     parser.add_argument('--trid', help="use the given trid (uuid4) as testrun-id",
                         default=os.environ.get('ACRE_TRID', str(uuid.uuid4())))
     parser.add_argument('-S', '--setting', help="read setting file to environment",
                         nargs="+", default=[])
     (myargs, options) = parser.parse_known_args()
 
-    log.basicConfig(level=log.DEBUG)
+    if myargs.debug:
+        log.setLevel(log.DEBUG)
     log.debug(f"arguments: {options}")
     log.debug(f"options: {options}")
 
