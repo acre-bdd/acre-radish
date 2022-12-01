@@ -54,7 +54,12 @@ def main():
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
     cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)}'
     log.trace(f"{cmd} [{myargs.trid}]")
-    return subprocess.run(cmd, shell=True).returncode
+    monitor = open("monitor.log", "w")
+    radish = subprocess.Popen(cmd, shell=True, stdout=monitor, stderr=monitor)
+    mon = subprocess.Popen("tail -f monitorlog", shell=True)
+    radish.wait()
+    mon.terminate()
+    mon.wait()
 
 
 def _read_userdata():
