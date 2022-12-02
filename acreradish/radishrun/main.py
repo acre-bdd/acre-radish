@@ -52,7 +52,7 @@ def main():
 
     env = f"-u TRID={myargs.trid} -u ARTIFACTS={artifacts}"
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
-    cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)} >>monitor2.log 2>&1'
+    cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)} >>monitor2.log'
     log.trace(f"{cmd} [{myargs.trid}]")
     # monitor = open("monitor.log", "w")
     # radish = subprocess.Popen(cmd, shell=True, stdout=monitor, stderr=monitor)
