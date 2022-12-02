@@ -52,15 +52,15 @@ def main():
 
     env = f"-u TRID={myargs.trid} -u ARTIFACTS={artifacts}"
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
-    cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)} >>/tmp/monitor2.log'
+    cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)} | tee tmp/monitor2.log'
     log.trace(f"{cmd} [{myargs.trid}]")
     # monitor = open("monitor.log", "w")
     # radish = subprocess.Popen(cmd, shell=True, stdout=monitor, stderr=monitor)
     radish = subprocess.Popen(cmd, shell=True)
-    mon = subprocess.Popen("tail -f /tmp/monitor2.log", shell=True)
+    # mon = subprocess.Popen("tail -f /tmp/monitor2.log", shell=True)
     radish.wait()
-    mon.terminate()
-    mon.wait()
+    # mon.terminate()
+    # mon.wait()
 
 
 def _read_userdata():
