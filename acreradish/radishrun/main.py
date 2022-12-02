@@ -56,7 +56,7 @@ def main():
     log.trace(f"{cmd} [{myargs.trid}]")
     monitor = open("monitor.log", "w")
     radish = subprocess.Popen(cmd, shell=True, stdout=monitor, stderr=monitor)
-    mon = subprocess.Popen("tail -f monitorlog", shell=True)
+    mon = subprocess.Popen("tail -f monitor.log", shell=True)
     radish.wait()
     mon.terminate()
     mon.wait()
