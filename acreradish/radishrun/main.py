@@ -4,11 +4,14 @@ import sys
 import subprocess
 import argparse
 import uuid
+import pylogx
 
-from acrelib import log
-from acre.path import AcrePath
+from . import log
 
 from .settings import Settings
+from . import ffmpeg
+
+pylogx.enable_colors()
 
 
 def main():
@@ -20,13 +23,13 @@ def main():
                         action="store_true")
     parser.add_argument('--debug', help="enable debug logging", action="store_true")
     parser.add_argument('--trid', help="use the given trid (uuid4) as testrun-id",
-                        default=os.environ.get('ACRE_TRID', str(uuid.uuid4())))
+                        default=os.environ.get('TRID', str(uuid.uuid4())))
     parser.add_argument('-S', '--setting', help="read setting file to environment",
                         nargs="+", default=[])
     (myargs, options) = parser.parse_known_args()
 
     if myargs.debug:
-        log.setLevel(log.DEBUG)
+        pylogx.log.setLevel(pylogx.Level.DEBUG)
     log.debug(f"arguments: {options}")
     log.debug(f"options: {options}")
 
@@ -49,10 +52,16 @@ def main():
     os.environ['ARTIFACTS'] = artifacts
     os.environ['TRID'] = myargs.trid
     os.environ['DISPLAY'] = ":99.0"
+    pp = []
+    if 'PYTHONPATH' in os.environ:
+        pp.extend(os.environ['PYTHONPATH'].split(":"))
+    pp.append("src/")
 
-    env = f"-u TRID={myargs.trid} -u ARTIFACTS={artifacts}"
-    arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps -b {AcrePath.steps()}"
-    cmd = f'PYTHONPATH=src/ radish {arguments}  {userdata} {" ".join(options)}'
+    ffmpeg.install()
+
+    env = ""
+    arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps"
+    cmd = f'PYTHONPATH={":".join(pp)} radish {arguments}  {userdata} {" ".join(options)}'
     log.trace(f"{cmd} [{myargs.trid}]")
     # monitor = open("monitor.log", "w")
     # radish = subprocess.Popen(cmd, shell=True, stdout=monitor, stderr=monitor)
