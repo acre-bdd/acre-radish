@@ -9,7 +9,6 @@ import pylogx
 from . import log
 
 from .settings import Settings
-from . import ffmpeg
 
 pylogx.enable_colors()
 
@@ -56,8 +55,6 @@ def main():
     if 'PYTHONPATH' in os.environ:
         pp.extend(os.environ['PYTHONPATH'].split(":"))
     pp.append("src/")
-
-    ffmpeg.install()
 
     env = ""
     arguments = f"-t --bdd-xml {result_xml} {env} -b ./steps"
